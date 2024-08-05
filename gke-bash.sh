@@ -104,7 +104,7 @@ fi
 if ! gcloud compute firewall-rules describe allow-ssh-from-external &>/dev/null; then
   gcloud compute firewall-rules create allow-ssh-from-external \
       --network=jl-gke-vpc \
-      --allow=tcp:22 \
+      --allow=tcp:22,tcp:443 \
       --source-ranges=0.0.0.0/0 \
       --target-tags=jumphost
 else
