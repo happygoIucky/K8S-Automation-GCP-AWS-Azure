@@ -4,68 +4,75 @@ set -e
 
 # Variables
 PROJECT_ID="ljawn-se-lab"
-CLUSTER_NAME="jl-gks"
-ZONE="asia-southeast1-a" # Singapore region zone
-NETWORK_NAME="jl-gks-vpc"
-SUBNET_NAME="jl-gks-subnet"
-SUBNET_RANGE="10.0.0.0/24"
-NUM_NODES=1
-FIREWALL_RULE_NAME="allow-internet-access"
+ZONE="asia-southeast1-a"
 
-# Decode and save the service account key
-echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" | base64 --decode > ${HOME}/gcloud-service-key.json
+# Decode and save the service account keyz
+#echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" | base64 --decode > ${HOME}/gcloud-service-key.json
 
 # Authenticate to GCP
-gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+#gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
 
-# Set the project
 gcloud config set project $PROJECT_ID
+gcloud config set compute/zone $ZONE
+#gcloud services enable serviceusage.googleapis.com
+#gcloud services enable container.googleapis.com
+#gcloud services enable compute.googleapis.com
 
-# Create a VPC network
-if ! gcloud compute networks describe $NETWORK_NAME >/dev/null 2>&1; then
-  gcloud compute networks create $NETWORK_NAME --subnet-mode=custom
-else
-  echo "VPC network $NETWORK_NAME already exists."
-fi
+gcloud compute networks create jl-gke-vpc --subnet-mode=custom
 
-# Create a subnet in the VPC network
-if ! gcloud compute networks subnets describe $SUBNET_NAME --region=$(echo $ZONE | sed 's/-[a-z]$//') >/dev/null 2>&1; then
-  gcloud compute networks subnets create $SUBNET_NAME \
-    --network=$NETWORK_NAME \
-    --range=$SUBNET_RANGE \
-    --region=$(echo $ZONE | sed 's/-[a-z]$//')
-else
-  echo "Subnet $SUBNET_NAME already exists."
-fi
+gcloud compute networks subnets create my-subnet-asia-southeast1-a \
+    --network=jl-gke-vpc \
+    --region=asia-southeast1 \
+    --range=10.0.0.0/24
 
-# Create a GKE cluster in the subnet
-if ! gcloud container clusters describe $CLUSTER_NAME --zone $ZONE >/dev/null 2>&1; then
-  gcloud container clusters create $CLUSTER_NAME \
-    --zone $ZONE \
-    --network $NETWORK_NAME \
-    --subnetwork $SUBNET_NAME \ 
-    --num-nodes $NUM_NODES
-else
-  echo "GKE cluster $CLUSTER_NAME already exists."
-fi
+gcloud compute networks subnets create my-subnet-asia-southeast1-b \
+    --network=jl-gke-vpc \
+    --region=asia-southeast1 \
+    --range=10.0.1.0/24
 
-# Create a firewall rule to allow internet accessz
-if ! gcloud compute firewall-rules describe $FIREWALL_RULE_NAME >/dev/null 2>&1; then
-  gcloud compute firewall-rules create $FIREWALL_RULE_NAME \
-    --network $NETWORK_NAME \
-    --allow tcp:80,tcp:443 \
-    --source-ranges 0.0.0.0/0
-else
-  echo "Firewall rule $FIREWALL_RULE_NAME already exists."
-fi
+gcloud compute instances create jumphost \
+    --project=ljawn-se-lab \
+    --zone=asia-southeast1-a \
+    --machine-type=e2-medium \
+    --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=my-subnet-asia-southeast1-a \
+    --tags=jumphost \
+    --scopes=https://www.googleapis.com/auth/cloud-platform \
+    --service-account=jl-gks-sa@ljawn-se-lab.iam.gserviceaccount.com
 
-# Get credentials for kubectl
-gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE
+JUMPHOST_IP=$(gcloud compute instances describe jumphost \
+    --zone=asia-southeast1-a \
+    --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
 
-# Deploy a sample application
-#kubectl create deployment hello-world --image=gcr.io/google-samples/hello-app:1.0
+gcloud container clusters create jl-gke-sg \
+    --enable-ip-alias \
+    --network=jl-gke-vpc \
+    --subnetwork=my-subnet-asia-southeast1-a \
+    --enable-private-nodes \
+    --master-ipv4-cidr=172.16.0.0/28 \
+    --zone=asia-southeast1-a \
+    --node-locations=asia-southeast1-a,asia-southeast1-b \
+    --num-nodes=2 \
+    --enable-master-authorized-networks \
+    --master-authorized-networks=${JUMPHOST_IP}/32
 
-# Expose the deployment to the internet
-#kubectl expose deployment hello-world --type=LoadBalancer --port 80 --target-port 8080
+gcloud compute routers create nat-router \
+    --network=jl-gke-vpc \
+    --region=asia-southeast1
 
-#echo "GKE cluster created and application exposed to the internet."
+gcloud compute routers nats create nat-config \
+    --router=nat-router \
+    --auto-allocate-nat-external-ips \
+    --nat-all-subnet-ip-ranges \
+    --region=asia-southeast1
+
+gcloud compute firewall-rules create allow-ssh-from-external \
+    --network=jl-gke-vpc \
+    --allow=tcp:22 \
+    --source-ranges=0.0.0.0/0 \
+    --target-tags=jumphost
+
+gcloud compute firewall-rules create allow-internal-communication \
+    --network=jl-gke-vpc \
+    --allow=all \
+    --source-ranges=10.0.0.0/16
+
