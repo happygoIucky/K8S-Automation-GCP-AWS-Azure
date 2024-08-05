@@ -100,7 +100,7 @@ else
   echo "NAT configuration nat-config already exists."
 fi
 
-# Check if the firewall rule exists
+# Check if the firewall rule exists, update 443
 if ! gcloud compute firewall-rules describe allow-ssh-from-external &>/dev/null; then
   gcloud compute firewall-rules create allow-ssh-from-external \
       --network=jl-gke-vpc \
