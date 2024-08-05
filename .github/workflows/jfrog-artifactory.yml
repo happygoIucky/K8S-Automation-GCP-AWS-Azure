@@ -1,0 +1,47 @@
+name: "Push NPM Package to JFrog Artifactoryz"
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        #with:
+         # path: K8S-Automation-GCP-AWS-AZURE
+
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v3
+        env:  
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+      
+      - name: Setup Node npm
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      
+      - name: Clean npm cache
+        run: npm cache clean --force
+      
+      - name: Set CLI Config
+        run: jf npm-config --global=true --repo-resolve=happyg0lucky-npm-npm --repo-deploy=happyg0lucky-npm-npm
+      
+      - name: Install Deps
+          run: |
+          #BUILD_NAME="push npm to jfrog repo" #Ensure is small cap
+          #BUILD_NUMBER="${{ github.run_number }}"
+          #jf npm install $BUILD_NAME $BUILD_NUMBER
+          #jf rt bce $BUILD_NAME $BUILD_NUMBER
+          #jf rt bag $BUILD_NAME $BUILD_NUMBER
+          #jf npm publish $BUILD_NAME $BUILD_NUMBER
+          #jf rt bp $BUILD_NAME $BUILD_NUMBER
+
+          jf npm install --build-name my-npm-build --build-number 1
+          jf rt bce my-npm-build 1
+          jf rt bag my-npm-build 1
+          jf npm publish --build-name my-npm-build --build-number 1
+          jf rt bp my-npm-build 1	
+      
+    

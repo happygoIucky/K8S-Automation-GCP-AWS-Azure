@@ -1,0 +1,15 @@
+{
+  "name": "xml-express-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "pii-json-input-xml-body.js",
+  "scripts": {
+    "start": "node pii-json-input-xml-body.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "body-parser": "^1.19.0",
+    "express-xml-bodyparser": "^0.3.0",
+    "js2xmlparser": "^4.0.0"
+  }
+}

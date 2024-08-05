@@ -1,0 +1,14 @@
+{
+  "name": "k8s-automation-gcp-aws-azure",
+  "version": "1.0.0",
+  "description": "Purpose of this repo is to create a full-stack DevSecOps with Fortinet Cybersecurity Solution (WIP)\r Tools:",
+  "main": "pii.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
