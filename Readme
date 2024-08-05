@@ -81,7 +81,7 @@ sudo mv ./kubectl /usr/local/bin/kubectl
 gcloud components update
 sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
 # Add k8s config to local jumphost
-gcloud container clusters get-credentials my-private-cluster --zone=asia-southeast1-a
+gcloud container clusters get-credentials jl-gke-sg --zone=asia-southeast1-a
 # Test the kubectl
 kubectl get nodes
 

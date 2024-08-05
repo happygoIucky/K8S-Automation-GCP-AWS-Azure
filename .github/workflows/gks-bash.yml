@@ -49,6 +49,7 @@ jobs:
       run: |
         echo "Kubeconfig:"
         cat ~/.kube/config
+        curl https://api.github.com/meta | jq -r '.actions[]'
     
     - name: Grafana Deployment
       env:
