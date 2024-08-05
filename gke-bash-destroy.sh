@@ -24,7 +24,7 @@ gcloud config set compute/zone $ZONE
 #gcloud compute firewall-rules delete allow-internal-communication --project=ljawn-se-lab
 
 # this will delete the whole nat routre including the nat config
-gcloud compute delete create nat-router \
+gcloud compute routers delete nat-router \
     --region=asia-southeast1
 
 # this will delete the jumphost
