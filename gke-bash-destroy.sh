@@ -35,7 +35,6 @@ gcloud compute instances delete jumphost \
 gcloud container clusters delete jl-gke-sg \
     --zone=asia-southeast1-a
 
-
 # this will delete the VPC including the subnets
 gcloud compute networks subnets delete my-subnet-asia-southeast1-a \
     --region=asia-southeast1

@@ -108,10 +108,10 @@ jobs:
         GRAFANA_TOKEN: ${{ secrets.GRAFANA_TOKEN }}
       run: |
         if [ -f grafana-deploy.sh ]; then
-          chmod +x grafana-deploy.sh
-          bash grafana-deploy.sh "${GRAFANA_TOKEN}"
+          chmod +x eks-grafana-deploy.sh
+          bash eks-grafana-deploy.sh "${GRAFANA_TOKEN}"
         else
-          echo "grafana-deploy.sh not found"
+          echo "eks-grafana-deploy.sh not found"
         fi
 
     #- name: Grafana Destroy

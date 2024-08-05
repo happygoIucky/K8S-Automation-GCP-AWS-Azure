@@ -28,7 +28,7 @@ jobs:
       #  run: echo "$GCP_SERVICE_ACCOUNT_KEY" | gcloud auth activate-service-account --key-file=-
 
     - name: Run GKE creation script
-      run: bash gke-bash-new.sh
+      run: bash gke-bash.sh
       #env:
       #  GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.GCLOUD_SERVICE_KEY }}
     
@@ -52,3 +52,14 @@ jobs:
       run: |
         echo "Kubeconfig:"
         cat ~/.kube/config
+    
+    - name: Grafana Deployment
+      env:
+        GRAFANA_TOKEN: ${{ secrets.GKE_GRAFANA_TOKEN }}
+      run: |
+        if [ -f gke-grafana-deploy.sh ]; then
+          chmod +x gke-grafana-deploy.sh
+          bash gke-grafana-deploy.sh "${GKE_GRAFANA_TOKEN}"
+        else
+          echo "gke-grafana-deploy.sh not found"
+        fi
