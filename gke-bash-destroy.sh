@@ -25,20 +25,20 @@ gcloud config set compute/zone $ZONE
 
 # this will delete the whole nat routre including the nat config
 gcloud compute routers delete nat-router \
-    --region=asia-southeast1
+    --region=asia-southeast1 --quiet
 
 # this will delete the jumphost
 gcloud compute instances delete jumphost \
     --project=ljawn-se-lab \
-    --zone=asia-southeast1-a
+    --zone=asia-southeast1-a --quiet
 
 # this will delete the GKE cluster
 gcloud container clusters delete jl-gke-sg \
-    --zone=asia-southeast1-a
+    --zone=asia-southeast1-a --quiet
 
 # this will delete the VPC including the subnets
 gcloud compute networks subnets delete my-subnet-asia-southeast1-a \
-    --region=asia-southeast1
+    --region=asia-southeast1 --quiet
 gcloud compute networks subnets delete my-subnet-asia-southeast1-b \
-    --region=asia-southeast1
-gcloud compute networks delete jl-gke-vpc
+    --region=asia-southeast1 --quiet
+gcloud compute networks delete jl-gke-vpc --quiet
