@@ -74,8 +74,9 @@ if ! gcloud container clusters describe jl-gke-sg --zone=asia-southeast1-a &>/de
       --zone=asia-southeast1-a \
       --node-locations=asia-southeast1-a,asia-southeast1-b \
       --num-nodes=2 \
-      --enable-master-authorized-networks \
-      --master-authorized-networks=${JUMPHOST_IP}/32
+      # Uncomment this unless you want to only allow jumphost to access the cluster
+      #--enable-master-authorized-networks \  
+      #--master-authorized-networks=${JUMPHOST_IP}/32
 else
   echo "GKE cluster jl-gke-sg already exists."
 fi
