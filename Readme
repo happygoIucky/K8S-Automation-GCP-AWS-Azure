@@ -1,12 +1,12 @@
 Purpose of this repo is to create a full-stack DevSecOps with Fortinet Cybersecurity Solution (WIP)
-Tools:
 
+Tools:
 Build Tools : npm, maven
 CICD: Github Actions
 IaC : Terraform, Docker, Cloudformation, Shell
 Logging: ELK/Loki
 Monitoring: Prometheus/Grafana (SaaS)
-Orchestrator: K8S
+Orchestrator: GKE,AKS,EKS
 eBPF: built-in Calico CNI
 Artifact Management: JFrog Artifactory (SaaS)
 Secret Management: HCP Vault (SaaS)
