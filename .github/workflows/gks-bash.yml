@@ -53,7 +53,7 @@ jobs:
     
     - name: Grafana Deployment
       env:
-        GRAFANA_TOKEN: ${{ secrets.GKE_GRAFANA_TOKEN }}
+        GKE_GRAFANA_TOKEN: ${{ secrets.GKE_GRAFANA_TOKEN }}
       run: |
         if [ -f gke-grafana-deploy.sh ]; then
           chmod +x gke-grafana-deploy.sh
