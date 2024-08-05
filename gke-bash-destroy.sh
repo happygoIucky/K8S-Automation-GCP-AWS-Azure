@@ -19,8 +19,9 @@ gcloud config set compute/zone $ZONE
 #gcloud services enable compute.googleapis.com
 
 # this will delete the firewall rules
-gcloud compute firewall-rules delete allow-ssh-from-external
-gcloud compute firewall-rules delete allow-internal-communication
+gcloud compute firewall-rules list --project=ljawn-se-lab
+gcloud compute firewall-rules delete allow-ssh-from-external --project=ljawn-se-lab
+gcloud compute firewall-rules delete allow-internal-communication --project=ljawn-se-lab
 
 # this will delete the whole nat routre including the nat config
 gcloud compute delete create nat-router \
