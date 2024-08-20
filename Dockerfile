@@ -17,8 +17,8 @@ COPY jwt-user.js .
 EXPOSE 3000
 
 # Use a non-root user for security
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-USER appuser
+#RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+#USER appuser
 
 # Define the command to run your application
 CMD ["node", "jwt-user.js"]
