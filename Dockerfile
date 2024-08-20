@@ -8,17 +8,17 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install the dependencies
-RUN npm ci --only=production
+RUN npm install
 
 # Copy the rest of the application code to the working directory
-COPY pii-json-input-xml-body.js .
+COPY jwt-user.js .
 
 # Expose the port that your application will run on
-EXPOSE 3333
+EXPOSE 3000
 
 # Use a non-root user for security
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-USER appuser
+#RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+#USER appuser
 
 # Define the command to run your application
-CMD ["node", "pii-json-input-xml-body.js"]
+CMD ["node", "jwt-user.js"]

@@ -28,4 +28,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USER }}/pii-xml:latest
+          tags: ${{ secrets.DOCKER_USER }}/pii-jwt:latest
