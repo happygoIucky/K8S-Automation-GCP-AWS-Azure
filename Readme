@@ -67,6 +67,7 @@ uncomment the  name: 'Terraform Destroy'
 
 # After create SA from GCP Console and downloaded the json, convert to base64 and upload to git secrets or hashivault
 cat sa.json | base64
+After that, you can start to deploy the gke-bash.sh
 
 # --------------THIS SESSION FOR JUMPHOST IN GCP, so only JUMPHOST can manage GKE----------------
 # Create key pair from your laptop and upload to GCP if u have not done so (this is for access jumphost later)
@@ -85,6 +86,7 @@ gcloud container clusters get-credentials jl-gke-sg --zone=asia-southeast1-a
 # Test the kubectl
 kubectl get nodes
 
+After that you can run gke-grafana-deploy.sh in the jumphost to deploy the grafana
 
 # To apply run gke-bash.yml workflow and it will execute gke-bash.sh
 # To clean up run gke-bash-destroy.yml workflow and it will execute gke-bash-destroy.sh
@@ -131,3 +133,5 @@ aws eks update-kubeconfig --region <region> --name <cluster_name>
 
 # Verify kubectl access
 kubectl get nodes
+
+kubectl run ping-test --image=busybox --command -- sleep 3600
