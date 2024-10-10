@@ -2,9 +2,9 @@
   "name": "xml-express-app",
   "version": "1.0.0",
   "description": "",
-  "main": "pii-json-input-xml-body.js",
+  "main": "jwt-user.js",
   "scripts": {
-    "start": "node pii-json-input-xml-body.js"
+    "start": "node jwt-user.js"
   },
   "dependencies": {
     "express": "^4.17.1",

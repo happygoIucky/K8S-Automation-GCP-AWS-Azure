@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a pzarent image with a specific version for security
-FROM node:18.17.1
+FROM node:14
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
