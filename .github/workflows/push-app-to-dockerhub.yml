@@ -25,7 +25,7 @@ jobs:
         run: docker pull mariadb:10.6.2
 
       - name: Build Docker image without cache
-        run: docker build --no-cache -t verademo .
+        run: docker build --no-cache -t verademo ./verademo
       
       - name: Push Docker image to Docker Hub
         run: docker push verademo
