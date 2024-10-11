@@ -19,8 +19,9 @@ scanners:
 #  - python
 
 # Configures target url where dynamic scan should be performed.
-## url: http://47.237.92.166:8083
-  #full_scan: false #true|falsez
+dast:
+  url: http://owasp.happyg0lucky.com:8083
+  full_scan: false #true|falsez
 
 # Language scanners run sequentially by default. Can be configured to run in parallel.
 #resource:
