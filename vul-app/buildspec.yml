@@ -1,0 +1,32 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+    commands:
+      - git clone https://github.com/bnreplah/verademo
+      - WRAPPER_VERSION=`curl https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/maven-metadata.xml | grep latest |  cut -d '>' -f 2 | cut -d '<' -f 1`
+      - wget "https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/$WRAPPER_VERSION/vosp-api-wrappers-java-$WRAPPER_VERSION.jar" -O VeracodeJavaAPI.jar
+      - ls
+      - uname -a
+  pre_build:
+    commands:
+      - echo Nothing to do in the pre_build phase...
+      - aws configure set region us-east-1
+      - VERACODE_API_KEY=$(aws ssm get-parameter --name VKEY --query "Parameter.Value" --output text)
+      - VERACODE_API_ID=$(aws ssm get-parameter --name VID --query "Parameter.Value" --output text)
+      - echo "$VERACODE_API_ID"
+  build:
+    commands:
+      - echo Build started on `date`
+      - mvn -B clean package --file app/pom.xml
+      # Uncomment lines if using the Veracode Authored Docker Image: https://hub.docker.com/r/veracode/api-wrapper-java
+      #- java -jar /opt/veracode/api-wrapper.jar -vid $VERACODE_ID -vkey $VERACODE_KEY -action UploadAndScan -createprofile true -appname Verademo -version $(date +%Y-%m-%d-%H:%M)} -filepath app/target/verademo.war
+      #- java -jar /opt/veracode/api-wrapper.jar -vid $VERACODE_ID -vkey $VERACODE_KEY -action UploadAndScan -createprofile true -appname Verademo -version $(date +%Y-%m-%d-%H:%M)} -filepath app/target/verademo.war
+  post_build:
+    commands:
+      - echo post build step
+artifacts:
+  files:
+    - app/target/verademo.war
