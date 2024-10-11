@@ -21,7 +21,7 @@ scanners:
 # Configures target url where dynamic scan should be performed.
 dast:
   url: http://47.237.92.166:8083
-  full_scan: false #true|false
+  full_scan: false #true|falsez
 
 # Language scanners run sequentially by default. Can be configured to run in parallel.
 #resource:
