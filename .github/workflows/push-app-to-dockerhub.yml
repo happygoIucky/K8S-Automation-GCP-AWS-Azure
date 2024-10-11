@@ -26,11 +26,6 @@ jobs:
 
       - name: Build Docker image without cache
         run: docker build --no-cache -t verademo .
-      -
-        name: Build App to Docker Image and Push to Docker Hub Repository
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USER }}/vul-app:latest
+      
+      - name: Push Docker image to Docker Hub
+        run: docker push verademo
