@@ -21,7 +21,7 @@ scanners:
 # Configures target url where dynamic scan should be performed.
 dast:
   url: http://owasp.happyg0lucky.com:8083
-  full_scan: false #true|false
+  full_scan: false #true|false agian
 
 # Language scanners run sequentially by default. Can be configured to run in parallel.
 #resource:
