@@ -20,7 +20,7 @@ scanners:
 
 # Configures target url where dynamic scan should be performed.
 dast:
-  url: http://owasp.happyg0lucky.com/xvwa
+  url: http://owasp.happyg0lucky.com/xvwa/
   full_scan: true #true|false agian
 
 # Language scanners run sequentially by default. Can be configured to run in parallel.
