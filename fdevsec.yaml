@@ -9,9 +9,9 @@ scanners:
   #- sast
   #- sca
   #- secret
-  #- iac
+  - iac
   #- container
-  - dast
+  #- dast
 
 # Configures languages for sast scanner. If not configured, scans will be performed on all supported languages
 #languages:
