@@ -6,12 +6,12 @@ id:
 
 # If below settings are not configured, scans will be performed for all supported scanners.
 scanners:
-  - sast
-  - sca
-  - secret
+  #- sast
+  #- sca
+  #- secret
   #- iac
   #- container
-  #- dast
+  - dast
 
 # Configures languages for sast scanner. If not configured, scans will be performed on all supported languages
 #languages:
@@ -19,9 +19,9 @@ scanners:
 #  - python
 
 # Configures target url where dynamic scan should be performed.
-#dast:
-  #url: http://owasp.happyg0lucky.com/xvwa/
-  #full_scan: true #true|false agian
+dast:
+  url: http://8.219.251.124:11434/
+  full_scan: true #true|false agian
 
 # Language scanners run sequentially by default. Can be configured to run in parallel.
 #resource:
