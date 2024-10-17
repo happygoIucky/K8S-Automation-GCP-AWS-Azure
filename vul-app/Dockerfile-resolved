@@ -4,7 +4,7 @@
 #
 #https://hub.docker.com/_/mariadb/
 # This is Ubuntu 20.04 LTS
-FROM mariadb:8.6.2
+FROM mariadb:10.6.2
 
 # Configure MariaDB
 ENV MYSQL_RANDOM_ROOT_PASSWORD=true
@@ -20,6 +20,9 @@ RUN apt-get update \
     && apt-get -y install openjdk-8-jdk-headless openjdk-8-jre-headless maven fortune-mod iputils-ping \
     && ln -s /usr/games/fortune /bin/ \
     && rm -rf /var/lib/apt/lists/*
+
+# Create a non-root user and group
+RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
