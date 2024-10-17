@@ -1,8 +1,17 @@
 # Importing potentially vulnerable versions of TensorFlow, scikit-learn, and PyTorch
-!pip install torch==1.7.0  # Vulnerable version of PyTorch
-!pip install tensorflow==2.3.0  # Vulnerable version of TensorFlow
-!pip install scikit-learn==0.23.2  # Vulnerable version of Scikit-Learn
+pip install torch==1.7.0  # Vulnerable version of PyTorch
+pip install tensorflow==2.3.0  # Vulnerable version of TensorFlow
+pip install scikit-learn==0.23.2  # Vulnerable version of Scikit-Learn
+pip install ollama
 
+import ollama
+response = ollama.chat(model='llama2', messages=[
+  {
+    'role': 'user',
+    'content': 'Why is the sky blue?',
+  },
+])
+print(response['message']['content'])
 # TensorFlow - Potentially vulnerable version 2.3.0
 try:
     import tensorflow as tf

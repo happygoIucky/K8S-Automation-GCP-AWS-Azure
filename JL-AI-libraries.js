@@ -1,3 +1,10 @@
+
+const ollama = require('ollama');
+
+// Example usage of vulnerable version
+const result = ollama.someFunction();
+console.log(result);
+
 // Importing TensorFlow.js
 const tf = require('@tensorflow/tfjs');
 
