@@ -1,36 +1,33 @@
-# Importing potentially vulnerable versions of TensorFlow, scikit-learn, and PyTorch
-pip install torch==1.7.0  # Vulnerable version of PyTorch
-pip install tensorflow==2.3.0  # Vulnerable version of TensorFlow
-pip install scikit-learn==0.23.2  # Vulnerable version of Scikit-Learn
-pip install ollama
+import subprocess
 
-import ollama
-response = ollama.chat(model='llama2', messages=[
-  {
-    'role': 'user',
-    'content': 'Why is the sky blue?',
-  },
-])
-print(response['message']['content'])
-# TensorFlow - Potentially vulnerable version 2.3.0
-try:
-    import tensorflow as tf
-    print(f"TensorFlow version: {tf.__version__}")
-except ImportError:
-    print("TensorFlow is not installed. Please install version 2.3.0 using: pip install tensorflow==2.3.0")
+# List of libraries with specific vulnerable versions to check for vulnerabilities
+vulnerable_libraries = [
+    'transformers==4.11.0',  # Example vulnerable version for transformers
+    'torch==1.7.0',          # Example vulnerable version for PyTorch
+    'tensorflow==2.3.0',     # Example vulnerable version for TensorFlow
+    'gemma==0.1.0'           # Hypothetical vulnerable version for Gemma (assuming it exists)
+]
 
-# scikit-learn - Potentially vulnerable version 0.24.0
-try:
-    import sklearn
-    print(f"scikit-learn version: {sklearn.__version__}")
-except ImportError:
-    print("scikit-learn is not installed. Please install version 0.24.0 using: pip install scikit-learn==0.24.0")
+def check_vulnerabilities_with_pip_audit():
+    print("Checking vulnerabilities with pip-audit...")
+    try:
+        subprocess.run(['pip-audit'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error occurred while auditing libraries with pip-audit: {e}")
 
-# PyTorch - Potentially vulnerable version 1.7.0
-try:
-    import torch
-    print(f"PyTorch version: {torch.__version__}")
-except ImportError:
-    print("PyTorch is not installed. Please install version 1.7.0 using: pip install torch==1.7.0")
+def check_vulnerabilities_with_safety():
+    print("Checking vulnerabilities with safety...")
+    try:
+        subprocess.run(['safety', 'check'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error occurred while auditing libraries with safety: {e}")
 
-# Additional code can go here for testing purposes
+def install_libraries():
+    for library in vulnerable_libraries:
+        print(f"Installing {library}...")
+        subprocess.run(['pip', 'install', library], check=True)
+
+if __name__ == "__main__":
+    install_libraries()
+    check_vulnerabilities_with_pip_audit()  # Check with pip-audit
+    check_vulnerabilities_with_safety()     # Check with safety
