@@ -1,0 +1,1 @@
+pip install pytorch-lightning==2.3.2
