@@ -1,4 +1,4 @@
 transformers==4.30.0
 torch==2.0.1
 scikit-learn==0.22  
-langchain==0.0.200
+langchain==0.0.131
