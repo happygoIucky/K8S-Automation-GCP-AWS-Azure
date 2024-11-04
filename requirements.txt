@@ -3,4 +3,4 @@ torch==2.0.1
 scikit-learn==0.22  
 langchain==0.0.131
 langchain-experimental==0.0.10
-ollama==0.1.2
+ollama==0.1.1
