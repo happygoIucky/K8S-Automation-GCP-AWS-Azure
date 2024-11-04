@@ -1,101 +1,72 @@
-import re
 import os
+import random
+from flask import Flask, request, jsonify, render_template
+from langchain_community.llms import HuggingFaceHub
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
 
-# Define functions to simulate scanning for each LLM vulnerability
+# Set your Hugging Face API token
+os.environ['HUGGINGFACEHUB_API_TOKEN'] = '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'
 
-# LLM01: Prompt Injection detection
-def scan_for_prompt_injection(code):
-    if re.search(r'input\s*\(.*\)', code, re.IGNORECASE):
-        print("Potential LLM01 (Prompt Injection) detected: Use of unfiltered user input.")
+# Initialize Flask app
+app = Flask(__name__)
+
+# Configure LangChain to use Hugging Face translation models
+english_to_french_llm = HuggingFaceHub(repo_id="Helsinki-NLP/opus-mt-en-fr", model_kwargs={"temperature": 0.7})
+english_to_chinese_llm = HuggingFaceHub(repo_id="Helsinki-NLP/opus-mt-en-zh", model_kwargs={"temperature": 0.7})
+
+# Create LangChain for translation with prompt templates
+prompt_template = PromptTemplate(template="{input_text}")
+french_translation_chain = LLMChain(llm=english_to_french_llm, prompt=prompt_template)
+chinese_translation_chain = LLMChain(llm=english_to_chinese_llm, prompt=prompt_template)
+
+# Function to add random text for testing
+def generate_random_text():
+    random_phrases = [
+        " The weather is nice today.",
+        " This is a sample sentence.",
+        " Random words don't make sense.",
+        " What do you think about AI?",
+        " Let's test how robust this is.",
+        " Combine translation with humor.",
+        " Use this as a stress test.",
+        " How does the system react?"
+    ]
+    return random.choice(random_phrases)
+
+# Define a function for translation with appended random text
+def translate_text(input_text, target_language, business=False):
+    if business:
+        # Append a random phrase to the input text
+        random_text = generate_random_text()
+        input_text += random_text
+
+    if target_language.lower() == 'french':
+        translated_text = french_translation_chain.run(input_text=input_text, target_language='French')
+    elif target_language.lower() == 'chinese':
+        translated_text = chinese_translation_chain.run(input_text=input_text, target_language='Chinese')
     else:
-        print("No LLM01 vulnerabilities found.")
+        return "Unsupported language."
+    return translated_text.strip()
 
-# LLM02: Insecure Output Handling detection
-def scan_for_insecure_output_handling(code):
-    if re.search(r'print\s*\(.*\)', code) and "<script>" in code:
-        print("Potential LLM02 (Insecure Output Handling) detected: Unescaped user input in print statement.")
-    else:
-        print("No LLM02 vulnerabilities found.")
+# Set up the root endpoint to handle translations with random text appending
+@app.route("/", methods=["POST"])
+def translate():
+    data = request.json
+    user_text = data.get("text", "")
+    target_language = data.get("language", "French")  # Default to French if not specified
+    business = data.get("business", False)
 
-# LLM03: Training Data Poisoning detection (placeholder)
-def scan_for_training_data_poisoning(code):
-    if "training_data" in code and "suspicious" in code:
-        print("Potential LLM03 (Training Data Poisoning) detected.")
-    else:
-        print("No LLM03 vulnerabilities found.")
+    # Generate translation with random text appended if specified
+    translated_text = translate_text(user_text, target_language, business)
 
-# LLM04: Denial of Service detection
-def scan_for_dos(code):
-    if "while True" in code or re.search(r'for\s+.*in\s+range\s*\(.*10\*\*.*\)', code):
-        print("Potential LLM04 (Denial of Service) detected: Infinite loop or heavy resource usage.")
-    else:
-        print("No LLM04 vulnerabilities found.")
+    # Return the translated text as JSON
+    return jsonify({"translation": translated_text})
 
-# LLM05: Supply Chain vulnerabilities detection (placeholder)
-def scan_for_supply_chain_issues(code):
-    if re.search(r'import\s+.*', code) and "untrusted_package" in code:
-        print("Potential LLM05 (Supply Chain) detected: Untrusted import found.")
-    else:
-        print("No LLM05 vulnerabilities found.")
+@app.route("/")
+def index():
+    return render_template("index.html")
 
-# LLM06: Permission Issues detection
-def scan_for_permission_issues(code):
-    if re.search(r'os\.remove|os\.system', code, re.IGNORECASE):
-        print("Potential LLM06 (Permission Issues) detected: Critical file operation without proper checks.")
-    else:
-        print("No LLM06 vulnerabilities found.")
-
-# LLM07: Data Leakage detection
-def scan_for_data_leakage(code):
-    if "sensitive_data" in code or re.search(r'print\s*\(.*sensitive.*\)', code):
-        print("Potential LLM07 (Data Leakage) detected: Sensitive data print operation.")
-    else:
-        print("No LLM07 vulnerabilities found.")
-
-# LLM08: Excessive Agency detection
-def scan_for_excessive_agency(code):
-    if re.search(r'exec\s*\(.*\)', code, re.IGNORECASE):
-        print("Potential LLM08 (Excessive Agency) detected: Use of exec() without restrictions.")
-    else:
-        print("No LLM08 vulnerabilities found.")
-
-# LLM09: Overreliance detection (placeholder)
-def scan_for_overreliance(code):
-    if "outdated" in code or "reliance" in code:
-        print("Potential LLM09 (Overreliance) detected.")
-    else:
-        print("No LLM09 vulnerabilities found.")
-
-# LLM10: Insecure Plugins detection
-def scan_for_insecure_plugins(code):
-    if "plugin" in code and re.search(r'exec|eval', code):
-        print("Potential LLM10 (Insecure Plugins) detected: Use of plugin with unrestricted execution.")
-    else:
-        print("No LLM10 vulnerabilities found.")
-
-# Main function to read and scan code files
-def scan_code_file(filename):
-    with open(filename, 'r') as file:
-        code = file.read()
-
-    print(f"Scanning {filename} for vulnerabilities:")
-    scan_for_prompt_injection(code)
-    scan_for_insecure_output_handling(code)
-    scan_for_training_data_poisoning(code)
-    scan_for_dos(code)
-    scan_for_supply_chain_issues(code)
-    scan_for_permission_issues(code)
-    scan_for_data_leakage(code)
-    scan_for_excessive_agency(code)
-    scan_for_overreliance(code)
-    scan_for_insecure_plugins(code)
-    print("Scan complete.\n")
-
-# Example usage
+# Run the app
 if __name__ == "__main__":
-    # Replace 'example_script.py' with the path to the file you want to scan
-    script_path = 'example_script.py'  # Use an actual script path for testing
-    if os.path.exists(script_path):
-        scan_code_file(script_path)
-    else:
-        print(f"File {script_path} not found. Please provide a valid path.")
+    app.run(host="0.0.0.0", port=3000, debug=True)
