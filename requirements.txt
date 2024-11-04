@@ -5,3 +5,4 @@ langchain==0.0.131
 langchain-experimental==0.0.10
 ollama==0.0.15
 llama-cpp-python==0.2.71
+tensorflow==2.10.1
