@@ -20,7 +20,7 @@ scanners:
 
 # Configures target url where dynamic scan should be performed.
 dast:
-  url: http://llm.happyg0lucky.com:3000/
+  url: http://llm.happyg0lucky.com:5000/
   full_scan: false #true|false agian
 
 # Language scanners run sequentially by default. Can be configured to run in parallel.
