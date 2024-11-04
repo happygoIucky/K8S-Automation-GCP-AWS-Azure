@@ -18,7 +18,7 @@ scanners:
 #  - javascript
 #  - python
 
-# Configures target url where dynamic scan should be performed.
+# Configures target url where dynamic scan should be performed.z
 dast:
   url: http://llm.happyg0lucky.com:5000/
   full_scan: true #true|false agian
