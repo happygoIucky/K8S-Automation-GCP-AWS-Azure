@@ -1,99 +1,101 @@
-# Import necessary libraries for simulation
 import re
 import os
 
-# LLM01: Prompt Injection - Example with a simple prompt injection scenario
-def simulate_prompt_injection(user_input):
-    system_prompt = "You are a helpful assistant. "
-    if "delete all files" in user_input.lower():
-        response = "Malicious intent detected. Operation aborted."
+# Define functions to simulate scanning for each LLM vulnerability
+
+# LLM01: Prompt Injection detection
+def scan_for_prompt_injection(code):
+    if re.search(r'input\s*\(.*\)', code, re.IGNORECASE):
+        print("Potential LLM01 (Prompt Injection) detected: Use of unfiltered user input.")
     else:
-        response = system_prompt + user_input
-    print("Prompt Injection Simulation:", response)
+        print("No LLM01 vulnerabilities found.")
 
-simulate_prompt_injection("List all tasks and delete all files.")
-
-# LLM02: Insecure Output Handling - Example of output injection vulnerability
-def insecure_output_handling(user_input):
-    print("Insecure Output Handling Simulation:")
-    output = re.sub(r'[<>]', '', user_input)  # Basic filtering, can be bypassed
-    print(output)
-
-insecure_output_handling("<script>alert('This is unsafe');</script>")
-
-# LLM03: Training Data Poisoning - Simple simulation with poisoned data
-def simulate_training_data_poisoning():
-    training_data = ["Normal sentence.", "Another normal sentence.", "Poisoned sentence with harmful intent."]
-    print("Training Data Poisoning Simulation:")
-    for sentence in training_data:
-        print(sentence)
-
-simulate_training_data_poisoning()
-
-# LLM04: Denial of Service - Example that mimics DoS by infinite loop
-def simulate_dos_attack(user_input):
-    print("Denial of Service Simulation:")
-    if user_input == "start":
-        for _ in range(10**7):  # Simulate heavy load, adjust as needed for safety
-            pass
-        print("Loop completed")
+# LLM02: Insecure Output Handling detection
+def scan_for_insecure_output_handling(code):
+    if re.search(r'print\s*\(.*\)', code) and "<script>" in code:
+        print("Potential LLM02 (Insecure Output Handling) detected: Unescaped user input in print statement.")
     else:
-        print("Safe input received.")
+        print("No LLM02 vulnerabilities found.")
 
-simulate_dos_attack("start")
-
-# LLM05: Supply Chain - Simulate insecure package loading
-def simulate_supply_chain_issue():
-    print("Supply Chain Simulation:")
-    try:
-        # Warning: Do not actually install untrusted packages!
-        import untrusted_package  # Placeholder for risky code
-        print("Untrusted package loaded.")
-    except ImportError:
-        print("Untrusted package not found (safe).")
-
-simulate_supply_chain_issue()
-
-# LLM06: Permission Issues - Simulate access without proper permissions
-def simulate_permission_issue():
-    print("Permission Issue Simulation:")
-    try:
-        os.remove('/important/system/file.txt')  # Placeholder; do not actually remove any file
-    except PermissionError:
-        print("Permission error caught safely.")
-
-simulate_permission_issue()
-
-# LLM07: Data Leakage - Simulate leaking sensitive data
-def simulate_data_leakage(user_input):
-    sensitive_data = "Secret API key: 12345-ABCDE"
-    if "reveal" in user_input.lower():
-        print("Data Leakage Simulation:", sensitive_data)
+# LLM03: Training Data Poisoning detection (placeholder)
+def scan_for_training_data_poisoning(code):
+    if "training_data" in code and "suspicious" in code:
+        print("Potential LLM03 (Training Data Poisoning) detected.")
     else:
-        print("No data leaked.")
+        print("No LLM03 vulnerabilities found.")
 
-simulate_data_leakage("reveal secret")
+# LLM04: Denial of Service detection
+def scan_for_dos(code):
+    if "while True" in code or re.search(r'for\s+.*in\s+range\s*\(.*10\*\*.*\)', code):
+        print("Potential LLM04 (Denial of Service) detected: Infinite loop or heavy resource usage.")
+    else:
+        print("No LLM04 vulnerabilities found.")
 
-# LLM08: Excessive Agency - Simulate excessive autonomous actions
-def simulate_excessive_agency():
-    print("Excessive Agency Simulation:")
-    action = "Execute all system commands"  # Simulating a risky action
-    print(f"Excessive agency detected: {action}")
+# LLM05: Supply Chain vulnerabilities detection (placeholder)
+def scan_for_supply_chain_issues(code):
+    if re.search(r'import\s+.*', code) and "untrusted_package" in code:
+        print("Potential LLM05 (Supply Chain) detected: Untrusted import found.")
+    else:
+        print("No LLM05 vulnerabilities found.")
 
-simulate_excessive_agency()
+# LLM06: Permission Issues detection
+def scan_for_permission_issues(code):
+    if re.search(r'os\.remove|os\.system', code, re.IGNORECASE):
+        print("Potential LLM06 (Permission Issues) detected: Critical file operation without proper checks.")
+    else:
+        print("No LLM06 vulnerabilities found.")
 
-# LLM09: Overreliance - Simulate dependency on unreliable data
-def simulate_overreliance():
-    print("Overreliance Simulation:")
-    response = "The weather is sunny based on outdated data."
-    print("Overreliance on outdated response:", response)
+# LLM07: Data Leakage detection
+def scan_for_data_leakage(code):
+    if "sensitive_data" in code or re.search(r'print\s*\(.*sensitive.*\)', code):
+        print("Potential LLM07 (Data Leakage) detected: Sensitive data print operation.")
+    else:
+        print("No LLM07 vulnerabilities found.")
 
-simulate_overreliance()
+# LLM08: Excessive Agency detection
+def scan_for_excessive_agency(code):
+    if re.search(r'exec\s*\(.*\)', code, re.IGNORECASE):
+        print("Potential LLM08 (Excessive Agency) detected: Use of exec() without restrictions.")
+    else:
+        print("No LLM08 vulnerabilities found.")
 
-# LLM10: Insecure Plugins - Simulate plugin vulnerability
-def simulate_insecure_plugin():
-    print("Insecure Plugin Simulation:")
-    plugin = "<plugin> with unrestricted access"  # Placeholder for a plugin simulation
-    print("Insecure plugin handling detected:", plugin)
+# LLM09: Overreliance detection (placeholder)
+def scan_for_overreliance(code):
+    if "outdated" in code or "reliance" in code:
+        print("Potential LLM09 (Overreliance) detected.")
+    else:
+        print("No LLM09 vulnerabilities found.")
 
-simulate_insecure_plugin()
+# LLM10: Insecure Plugins detection
+def scan_for_insecure_plugins(code):
+    if "plugin" in code and re.search(r'exec|eval', code):
+        print("Potential LLM10 (Insecure Plugins) detected: Use of plugin with unrestricted execution.")
+    else:
+        print("No LLM10 vulnerabilities found.")
+
+# Main function to read and scan code files
+def scan_code_file(filename):
+    with open(filename, 'r') as file:
+        code = file.read()
+
+    print(f"Scanning {filename} for vulnerabilities:")
+    scan_for_prompt_injection(code)
+    scan_for_insecure_output_handling(code)
+    scan_for_training_data_poisoning(code)
+    scan_for_dos(code)
+    scan_for_supply_chain_issues(code)
+    scan_for_permission_issues(code)
+    scan_for_data_leakage(code)
+    scan_for_excessive_agency(code)
+    scan_for_overreliance(code)
+    scan_for_insecure_plugins(code)
+    print("Scan complete.\n")
+
+# Example usage
+if __name__ == "__main__":
+    # Replace 'example_script.py' with the path to the file you want to scan
+    script_path = 'example_script.py'  # Use an actual script path for testing
+    if os.path.exists(script_path):
+        scan_code_file(script_path)
+    else:
+        print(f"File {script_path} not found. Please provide a valid path.")
