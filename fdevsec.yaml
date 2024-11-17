@@ -18,7 +18,7 @@ scanners:
 #  - javascript
 #  - python
 
-# Configures target url  where dynamic scan should be performed.zg
+# Configures target url  where dynzamic scan should be performed.zg
 dast:
   url: http://10.0.0.220:8000
   full_scan: true #true|false agian
