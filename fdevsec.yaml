@@ -20,7 +20,7 @@ scanners:
 
 # Configures target url  where dynamic scan should be performed.zg
 dast:
-  url: http://llm.happyg0lucky.com:5000/
+  url: http://10.0.0.220:8000
   full_scan: true #true|false agian
 
 # Language scanners run sequentially by default. Can be configured to run in parallel.
