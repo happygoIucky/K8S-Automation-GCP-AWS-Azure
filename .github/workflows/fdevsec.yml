@@ -18,9 +18,17 @@ jobs:
       #   env | grep -E "GITHUB_ACTIONS|GITHUB_RUN_NUMBER|GITHUB_REF_NAME|GITHUB_SHA" > /tmp/env
       #   docker pull registry.fortidevsec.forticloud.com/fdevsec_sast:latest
       #   docker run --rm --env-file /tmp/env --mount type=bind,source=$PWD,target=/scan registry.fortidevsec.forticloud.com/fdevsec_sast:latest
-      -
-        name: Perform FortiDevSec (SAST SCAN)
+      #-
+      #  name: Perform FortiDevSec (DAST SCAN)
+      #  run: |
+      #   env | grep -E "GITHUB_ACTIONS|GITHUB_RUN_NUMBER|GITHUB_REF_NAME|GITHUB_SHA" > /tmp/env
+      #   docker pull registry.fortidevsec.forticloud.com/fdevsec_dast:latest
+      #   docker run --rm --env-file /tmp/env --mount type=bind,source=$PWD,target=/scan registry.fortidevsec.forticloud.com/fdevsec_dast:latest
+
+      - 
+        name: DAST_PROXY_SERVER
         run: |
-         env | grep -E "GITHUB_ACTIONS|GITHUB_RUN_NUMBER|GITHUB_REF_NAME|GITHUB_SHA" > /tmp/env
-         docker pull registry.fortidevsec.forticloud.com/fdevsec_sast:latest
-         docker run --rm --env-file /tmp/env --mount type=bind,source=$PWD,target=/scan registry.fortidevsec.forticloud.com/fdevsec_sast:latest
+            export EMAIL=ljawn@fortinet.com LICENSE_SERIAL=FDEVSC0000000689_2134WN428447 ASSET_TOKEN=qjMKwT9aajJDhZUkhmCgapH139loF1DG5ESjmBKwadaArHrF6TWY2IcFUcML/4AYVmcncz/lsW/GpX64NShrSsdF+No+x9Vojr2yag== SCANURL=http://llm.happyg0lucky.com:5000 SCANTYPE=1 ASSET=12c2e0f5-d023-4756-9445-dadf2d0dd174
+            env | grep -E "EMAIL|LICENSE_SERIAL|ASSET_TOKEN|SCANURL|SCANTYPE|ASSET" > /tmp/env
+            docker pull registry.fortidast.forticloud.com/dastdevopsproxy:latest
+            docker run --rm --env-file /tmp/env --network=host registry.fortidast.forticloud.com/dastdevopsproxy:latest
