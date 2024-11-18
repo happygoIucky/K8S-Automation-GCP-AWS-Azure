@@ -25,9 +25,9 @@ jobs:
       #   docker pull registry.fortidevsec.forticloud.com/fdevsec_dast:latest
       #   docker run --rm --env-file /tmp/env --mount type=bind,source=$PWD,target=/scan registry.fortidevsec.forticloud.com/fdevsec_dast:latest
       - 
-        name: DAST_PROXY_SERVER
-        run: |
-            export EMAIL=ljawn@fortinet.com LICENSE_SERIAL=FDEVSC0000000689_0691BM801347 ASSET_TOKEN=6JfrmTmMbQjqPmrM9TsLtDgDtV9jTOWsMUaqwGwhYjJvYq1rtgSz5uJ5/cLlnK1D27TM6/DcjPLZb4G7wGaWCgjvkjvtH+KrJlgXvQ== SCANURL=http://10.0.0.220:8000 SCANTYPE=1 ASSET=58d059ca-5f2c-48ae-aee3-54a0c4ff6642
+         name: DAST_PROXY_SERVER
+         run: |
+            export EMAIL=ljawn@fortinet.com LICENSE_SERIAL=FFPENT0000237101 ASSET_TOKEN=mIq9mZusoT46mcbIKqHRbTyIycQZXakOEhgshUspe+xgvOOcwk+m6EUYNEl3CDxIzU/q5hbhMmvt6G6cVe1KXMcxbN2AaYvCKVX5/A== SCANURL=http://10.0.0.220:8000 SCANTYPE=1 ASSET=2e1864b0-b7c7-43af-a70a-9c5d48da9ada
             env | grep -E "EMAIL|LICENSE_SERIAL|ASSET_TOKEN|SCANURL|SCANTYPE|ASSET" > /tmp/env
             docker pull registry.fortidast.forticloud.com/dastdevopsproxy:latest
             docker run --rm --env-file /tmp/env --network=host registry.fortidast.forticloud.com/dastdevopsproxy:latest
