@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define your secrets from environment variables
-
+##
 # Add Helm repo
 helm repo add grafana https://grafana.github.io/helm-charts
 
