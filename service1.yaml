@@ -15,7 +15,6 @@ kind: Service
 apiVersion: v1
 metadata:
   name: service1
-  namespace: default
   annotations: {
     "health-check-ctrl" : "HLTHCK_ICMP",
     "lb-algo" : "round-robin",
