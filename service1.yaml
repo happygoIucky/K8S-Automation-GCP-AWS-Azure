@@ -6,20 +6,19 @@ metadata:
     run: my-sise
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      run: sise
   template:
     metadata:
       labels:
         run: sise
     spec:
       containers:
-        - name: sise
-          image: mhausenblas/simpleservice:0.5.0
-          ports:
-            - containerPort: 9876
-              name: sise-default
-  selector:
-    matchLabels:
-      run: sise
+      - name: sise
+        image: mhausenblas/simpleservice:0.5.0
+        ports:
+          - containerPort: 9876
 ---
 kind: Service
 apiVersion: v1

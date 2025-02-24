@@ -6,12 +6,12 @@ id:
 
 # If below settings are not configured, scans will be performed for all supported scanners.
 scanners:
-  - sast
-  - sca
-  - secret
-  - iac
-  - container
-  #- dast
+  #- sast
+  #- sca
+  #- secret
+  #- iac
+  #- container
+  - dast
 
 # Configures languages for sast scanner. If not configured, scans will be performed on all supported languages
 #languages:
@@ -20,7 +20,7 @@ scanners:
 
 # Configures target url  wherez dynzamic scan should be performed.zg
 dast:
-  url: http://10.0.0.220:8000
+  url: http://8.219.84.56:3001/
   full_scan: true #true|false agian
 
 # Language scanners run sequentially by default. Can be configured to run in parallel.
