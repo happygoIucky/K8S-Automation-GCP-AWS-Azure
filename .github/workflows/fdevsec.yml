@@ -13,7 +13,7 @@ jobs:
         name: Checkout SCM from Github
         uses: actions/checkout@v4
       -
-        name: Perform FortiDevSec (AST SCAN)
+        name: Perform FortiDevSec (DAST SCAN)
         run: |
          env | grep -E "GITHUB_ACTIONS|GITHUB_RUN_NUMBER|GITHUB_REF_NAME|GITHUB_SHA" > /tmp/env
          docker pull registry.fortidevsec.forticloud.com/fdevsec_dast:latest
